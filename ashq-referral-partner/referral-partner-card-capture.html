@@ -217,6 +217,7 @@ footer{margin-top:40px;font-size:13px;color:var(--ink-soft);border-top:1px solid
       <li>Form fields: name, email, phone, and one optional question, "Anything you'd like me to bring?"</li>
       <li>Copy the booking link into <code>rp_coffee_calendar_link</code>.</li>
     </ol>
+    <p>For the click-by-click version, see <a href="#usecase" onclick="document.getElementById('t-usecase').click();setTimeout(function(){document.getElementById('coffee-button').scrollIntoView();},50);return false;">Set up your coffee calendar</a> on the Team AI Use Case tab.</p>
   </div>
 
   <div class="part"><span class="tag">Part 4 · Nice-to-Meet-You form</span>
@@ -439,6 +440,86 @@ Otherwise answer: REVIEW: followed by the first problem in 12 words or fewer.</p
       <li><b>Monday team call:</b> share one coffee that came from a card. Wins belong to the agent who earned them.</li>
     </ol>
   </div>
+  <div class="part" id="coffee-button"><span class="tag">Set up your coffee calendar · about 15 minutes, once</span>
+    <h3>Make the "Pick a coffee time" button open your calendar</h3>
+    <p>The orange button at the bottom of every email opens your own booking page. The partner picks a time, and it lands on your calendar. You set this up once. Do each step in order, on a computer, not your phone.</p>
+
+    <h3>Step 1: Log in to your own GHL account</h3>
+    <ol class="steps">
+      <li>Go to your GHL login page and sign in.</li>
+      <li>Look at the top left corner. Make sure it shows <b>your</b> account name, not the agency or someone else's. If it shows the wrong one, click the name and pick yours from the list.</li>
+    </ol>
+
+    <h3>Step 2: Connect your Google or Outlook calendar</h3>
+    <p>This stops partners from booking a time when you're already busy.</p>
+    <ol class="steps">
+      <li>In the left menu, at the very bottom, click <b>Settings</b> (the gear icon).</li>
+      <li>In the Settings list, click <b>Calendars</b>.</li>
+      <li>At the top, click the <b>Connections</b> tab.</li>
+      <li>Click <b>Add New</b>. Choose <b>Google</b> if you use Gmail, or <b>Outlook</b> if you use Microsoft.</li>
+      <li>A sign-in window opens. Sign in with the email you use for your calendar and click <b>Allow</b>.</li>
+      <li>You're back in GHL and your calendar shows as connected. Leave this page open.</li>
+    </ol>
+
+    <h3>Step 3: Create the coffee calendar</h3>
+    <ol class="steps">
+      <li>In the left menu, click <b>Calendars</b>. It's a different spot than the Settings one from Step 2.</li>
+      <li>Near the top right, click <b>Calendar Settings</b>, then click the blue <b>+ New Calendar</b> button.</li>
+      <li>Pick <b>Personal Booking</b> (it's for one person). Then choose <b>Start from scratch</b> if it asks.</li>
+      <li>In <b>Calendar Name</b>, type <b>Coffee with Donna</b>, using your own first name.</li>
+      <li>In <b>Meeting Location</b>, type your favorite coffee shop and its address. If you'd rather choose later, type <i>Coffee shop near you. I'll text you the spot.</i></li>
+      <li>Click <b>Next</b> (or the <b>Availability</b> tab). Set <b>Duration</b> to <b>30 minutes</b>.</li>
+      <li>Turn off the days and hours you don't want coffee meetings. Example: Tuesday to Thursday, 8 to 11 a.m.</li>
+      <li>Find <b>Minimum scheduling notice</b> and set it to <b>1 day</b>. That way nobody books you for 20 minutes from now.</li>
+      <li>Find <b>Buffer time</b> and set <b>15 minutes</b> after each meeting, for driving.</li>
+      <li>Click <b>Next</b> until you reach the end, then click <b>Save</b>, <b>Create</b>, or <b>Complete</b>, whichever shows.</li>
+    </ol>
+
+    <h3>Step 4: Point the calendar at your real calendar</h3>
+    <ol class="steps">
+      <li>Still in <b>Calendar Settings</b>, find <b>Coffee with Donna</b> in the list. Click the <b>three dots</b> (⋮) on its row, then <b>Edit</b>.</li>
+      <li>Look for <b>Connections</b>, <b>Linked Calendar</b>, or <b>Check for conflicts</b>. The name varies by GHL version.</li>
+      <li>Choose the Google or Outlook calendar you connected in Step 2. Click <b>Save</b>.</li>
+    </ol>
+
+    <h3>Step 5: Copy your booking link</h3>
+    <ol class="steps">
+      <li>In the <b>Calendar Settings</b> list, find <b>Coffee with Donna</b> again.</li>
+      <li>Click the <b>three dots</b> (⋮) on its row, then click <b>Copy Link</b> (some versions show a small link icon or <b>Share</b> instead).</li>
+      <li>Open a new browser tab, paste the link in the address bar, and press Enter. You should see your booking page with open times. If you do, the link is right.</li>
+    </ol>
+
+    <h3>Step 6: Save the link where the email can find it</h3>
+    <ol class="steps">
+      <li>Go back to GHL. In the left menu, click <b>Settings</b> (gear icon, bottom).</li>
+      <li>In the Settings list, click <b>Custom Values</b>.</li>
+      <li>In the search box, type <b>coffee</b>. Click <b>RP Coffee Calendar Link</b>.</li>
+      <li>Delete whatever is in the <b>Value</b> box. Paste your link (on a Mac, Command + V). Click <b>Save</b>.</li>
+    </ol>
+    <div class="note ok">If Tim already sent the full setup to your account, the button is already wired to this custom value, and you're done after Step 6. Skip to Step 8 to test it.</div>
+
+    <h3>Step 7: Wire the button (Tim or George, once, in the master template)</h3>
+    <ol class="steps">
+      <li>Left menu: click <b>Automation</b>, then open the workflow <b>RP 2 – Write &amp; Send</b>.</li>
+      <li>Click the <b>Send Email</b> step to open it.</li>
+      <li>Below the email text, drag in a <b>Button</b> block. Some versions have a <b>+</b> that opens a block list.</li>
+      <li>Click the button. Change the <b>Button text</b> to <b>Pick a coffee time</b>.</li>
+      <li>Set <b>Action</b> (or <b>Link type</b>) to <b>Open website</b> / <b>URL</b>.</li>
+      <li>Click in the <b>URL</b> box and click the small <b>tag</b> icon (it looks like <code>{ }</code> or a luggage tag). Click <b>Custom Values</b>, then <b>RP Coffee Calendar Link</b>. The box now shows <code>{{custom_values.rp_coffee_calendar_link}}</code>.</li>
+      <li>Set the button color to orange (<code>#F0843B</code>) with white text. Click <b>Save</b> on the step, then <b>Save</b> on the workflow.</li>
+    </ol>
+    <p>Because the button points to a custom value instead of one person's link, the same email works for every agent. Donna's button opens Donna's calendar, and Carrie's opens Carrie's.</p>
+
+    <h3>Step 8: Test it</h3>
+    <ol class="steps">
+      <li>In the <b>Send Email</b> step, click <b>Send test email</b> (or <b>Test</b>) and send it to yourself.</li>
+      <li>Open that email on your phone and tap <b>Pick a coffee time</b>.</li>
+      <li>Your booking page should open. Book a fake time for tomorrow, check that it shows up on your Google or Outlook calendar, then cancel it.</li>
+    </ol>
+    <div class="note"><b>Button opens a blank page or an error?</b> Your custom value is empty or has a typo. Go back to Step 6 and paste the link again. <b>Times show when you're actually busy?</b> Redo Step 4.</div>
+    <p style="font-size:14px;color:var(--ink-soft)">GHL renames menus now and then. If a button name here doesn't match your screen, look for the closest word. Nothing in these steps can break your account.</p>
+  </div>
+
   <p style="color:var(--ink-soft);font-size:14px">The model for this came from Lisa Laird's process: upload the card, add the contact to the CRM, and trigger a personal follow-up.</p>
 </section>
 
