@@ -1,0 +1,491 @@
+<title>Referral Partner Card Capture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;700&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --blue:#2596BE; --blue-ink:#156F8F; --green:#1BA750; --green-ink:#127A3A; --orange:#F0843B; --orange-ink:#B85A17;
+  --ink:#2B3033; --ink-soft:#56616A; --line:#D9E3E8; --bg:#F6F9FA; --surface:#FFFFFF; --tint:#EAF4F8; --code-bg:#F1F5F7;
+  --warn-bg:#FFF4EA; --ok-bg:#E9F7EE;
+  --display:"Bitter", Georgia, "Times New Roman", serif;
+  --body:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --blue:#4FB3D9; --blue-ink:#7CC8E6; --green:#3CC46F; --green-ink:#6ED897; --orange:#F59A5C; --orange-ink:#F7B283;
+    --ink:#E4EAED; --ink-soft:#A3B0B8; --line:#2E3A41; --bg:#141A1D; --surface:#1B2327; --tint:#1C2E36; --code-bg:#11171A;
+    --warn-bg:#35261A; --ok-bg:#16301F;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --blue:#4FB3D9; --blue-ink:#7CC8E6; --green:#3CC46F; --green-ink:#6ED897; --orange:#F59A5C; --orange-ink:#F7B283;
+  --ink:#E4EAED; --ink-soft:#A3B0B8; --line:#2E3A41; --bg:#141A1D; --surface:#1B2327; --tint:#1C2E36; --code-bg:#11171A;
+  --warn-bg:#35261A; --ok-bg:#16301F;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:980px;margin:0 auto}
+a{color:var(--blue-ink)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+header.top{padding-block:28px 18px;display:grid;gap:6px}
+.crumb{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+.crumb a{color:inherit;text-decoration:none;border-bottom:1px solid var(--line)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1.15;margin:0;text-wrap:balance}
+.lede{margin:0;max-width:62ch;color:var(--ink-soft);font-size:17px}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:2px solid var(--line);display:flex;gap:4px;overflow-x:auto;scrollbar-width:thin;margin-inline:-16px;padding-inline:16px}
+nav.tabs button{font:600 14px/1 var(--body);color:var(--ink-soft);background:none;border:0;padding:14px 12px 12px;border-bottom:3px solid transparent;margin-bottom:-2px;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:var(--blue-ink);border-bottom-color:var(--blue)}
+nav.tabs button:hover{color:var(--ink)}
+section.panel{padding-top:28px;display:grid;gap:22px}
+h2{font-family:var(--display);font-weight:700;font-size:26px;line-height:1.2;margin:0;text-wrap:balance}
+h3{font-family:var(--display);font-weight:500;font-size:19px;margin:0;text-wrap:balance}
+p{margin:0;max-width:68ch}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;counter-reset:f}
+.flow li{list-style:none;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;display:grid;gap:4px;align-content:start}
+.flow li b{font-size:15px}
+.flow li span{font-size:14px;color:var(--ink-soft)}
+.flow li .who{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--green-ink)}
+.flow li .who.ai{color:var(--orange-ink)}
+.flow li .who.ghl{color:var(--blue-ink)}
+ol.flow{padding:0;margin:0}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px;display:grid;gap:10px;align-content:start}
+.note{border-left:4px solid var(--orange);background:var(--warn-bg);padding:12px 16px;border-radius:0 6px 6px 0;max-width:72ch}
+.note.ok{border-left-color:var(--green);background:var(--ok-bg)}
+.steps{margin:0;padding-left:22px;display:grid;gap:10px;max-width:72ch}
+.steps li::marker{font-weight:700;color:var(--blue-ink)}
+ul.plain{margin:0;padding-left:20px;display:grid;gap:6px;max-width:70ch}
+code,.mono{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:3px;overflow-wrap:anywhere}
+.part{border-top:1px solid var(--line);padding-top:20px;display:grid;gap:12px}
+.part .tag{font:500 12px/1 var(--mono);color:var(--blue-ink);letter-spacing:.06em;text-transform:uppercase}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);background:var(--tint)}
+tr:last-child td{border-bottom:0}
+.prompt{background:var(--surface);border:1px solid var(--line);border-radius:6px;display:grid}
+.prompt .bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.prompt pre{margin:0;padding:14px;font:13px/1.55 var(--mono);white-space:pre-wrap;overflow-wrap:anywhere;max-height:420px;overflow:auto;background:var(--code-bg);border-radius:0 0 6px 6px}
+button.copy{font:600 13px/1 var(--body);background:var(--orange);color:#fff;border:0;border-radius:4px;padding:9px 14px;cursor:pointer}
+button.copy.done{background:var(--green)}
+.email{background:var(--surface);border:1px solid var(--line);border-radius:6px;max-width:640px}
+.email .hdr{padding:12px 18px;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink-soft);display:grid;gap:2px}
+.email .bd{padding:18px;display:grid;gap:12px}
+.email .btn{display:inline-block;background:var(--orange);color:#fff;text-decoration:none;font-weight:700;padding:10px 16px;border-radius:4px;justify-self:start}
+.email .sig{font-size:14px;color:var(--ink-soft)}
+.inputs{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;font-size:14px}
+.inputs dt{color:var(--ink-soft)}
+.inputs dd{margin:0}
+.pill{display:inline-block;font:600 12px/1 var(--body);padding:5px 9px;border-radius:99px;background:var(--tint);color:var(--blue-ink)}
+.pill.ok{background:var(--ok-bg);color:var(--green-ink)}
+.pill.warn{background:var(--warn-bg);color:var(--orange-ink)}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.links a{display:grid;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;text-decoration:none;color:var(--ink)}
+.links a:hover{border-color:var(--blue)}
+.links a b{color:var(--blue-ink)}
+.links a span{font-size:14px;color:var(--ink-soft)}
+.voice p+p{margin-top:12px}
+.voice{display:grid;gap:0}
+footer{margin-top:40px;font-size:13px;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:14px}
+@media (prefers-reduced-motion:no-preference){ section.panel{animation:in .18s ease-out} @keyframes in{from{transform:translateY(4px)}to{transform:none}} }
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="crumb"><a href="https://success.retirement.agency/">Agent Success HQ</a> &rsaquo; Referral Partners</div>
+  <h1>Referral Partner Card Capture</h1>
+  <p class="lede">Scan a business card, add one personal detail, and a tailored "nice to meet you" email with your coffee calendar link goes out for you. Built in GoHighLevel for every agent's sub-account.</p>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Sections">
+  <button role="tab" id="t-overview" aria-controls="overview" aria-selected="true">Overview</button>
+  <button role="tab" id="t-agent" aria-controls="agent" aria-selected="false">Agent Quick Start</button>
+  <button role="tab" id="t-build" aria-controls="build" aria-selected="false">One-Time GHL Build</button>
+  <button role="tab" id="t-prompts" aria-controls="prompts" aria-selected="false">AI Prompts</button>
+  <button role="tab" id="t-sample" aria-controls="sample" aria-selected="false">Sample Email</button>
+  <button role="tab" id="t-usecase" aria-controls="usecase" aria-selected="false">Team AI Use Case</button>
+  <button role="tab" id="t-links" aria-controls="links" aria-selected="false">Links</button>
+</nav>
+
+<!-- OVERVIEW -->
+<section class="panel" id="overview" role="tabpanel" aria-labelledby="t-overview">
+  <h2>From card to coffee in about a minute</h2>
+  <p>Donna Sanders in Houston asked for this, and it works for every agent on the team. You meet a CPA, a dentist, or the activities director at a senior community. You scan the card before you leave the parking lot. The AI writes the follow-up, and it goes out with your coffee calendar link.</p>
+  <ol class="flow">
+    <li><span class="who">You · 10 sec</span><b>Scan the card</b><span>LeadConnector app, Scan Business Card. AI reads name, email, phone, and company, and saves the card image to the contact.</span></li>
+    <li><span class="who ghl">GHL · instant</span><b>Text with a link</b><span>Tag <code>rp-card</code> fires a workflow that texts you the Nice-to-Meet-You form link.</span></li>
+    <li><span class="who">You · 45 sec</span><b>Add the human part</b><span>Partner type, where you met, the personal touch ("loves Crown Royal"), what you talked about.</span></li>
+    <li><span class="who ai">AI · seconds</span><b>Write, then proofread</b><span>One AI step writes the email. A second checks name spelling, typos, and placeholders.</span></li>
+    <li><span class="who ghl">GHL · 10 min</span><b>Send or hold</b><span>Clean drafts send after a 10-minute window. Flagged drafts come to you for a quick fix.</span></li>
+    <li><span class="who">Partner</span><b>Books coffee</b><span>Your coffee calendar link sits right under the note. Booking tags them <code>rp-coffee-booked</code>.</span></li>
+  </ol>
+  <div class="split">
+    <div class="box"><h3>Training mode for the first 3</h3><p>Every new agent starts with <code>rp_auto_send = no</code>. The first two or three drafts come to you to read and approve. When you like what you see, flip it to <code>yes</code>.</p></div>
+    <div class="box"><h3>Auto mode after that</h3><p>Emails go out on their own unless the proofreader finds a problem: a misspelled name, a typo, leftover placeholder text, or a missing email. Only those come back to you.</p></div>
+    <div class="box"><h3>Two separate referral engines</h3><p>This is the B2B engine for professional referral partners. Client referrals (happy clients sending friends and family) run on their own track and never mix with this list.</p></div>
+  </div>
+</section>
+
+<!-- AGENT QUICK START -->
+<section class="panel" id="agent" role="tabpanel" aria-labelledby="t-agent" hidden>
+  <h2>Agent Quick Start</h2>
+  <p>This is the whole routine once your sub-account is set up. Keep this tab on your phone for your first event.</p>
+
+  <div class="part"><span class="tag">Before your first event · 10 minutes, once</span>
+    <ol class="steps">
+      <li>Install the <b>LeadConnector</b> app (App Store or Google Play) and log in to <b>your</b> sub-account. Update it: the scanner needs version 3.74 or later.</li>
+      <li>Connect your Google or Outlook calendar to your <b>Coffee</b> calendar so partners only see times you are free.</li>
+      <li>Check your four settings with Tim or George: your first name, your coffee calendar link, your email signature, and <code>rp_auto_send</code> (starts at <code>no</code>).</li>
+      <li>Scan your own business card once as a test. You should get the text within a minute.</li>
+    </ol>
+  </div>
+
+  <div class="part"><span class="tag">At the event · about 1 minute per card</span>
+    <ol class="steps">
+      <li>Open LeadConnector, go to <b>Contacts</b>, tap the blue <b>+</b>, then <b>Scan Business Card</b>. Scan the front, and the back if it has info.</li>
+      <li>Check the first name and email. Fix anything the scanner misread. The first name is the one the email will use.</li>
+      <li>Add the tag <code>rp-card</code> and switch on <b>Add to Files &amp; Folders</b> so the card image stays on the contact. Tap <b>Save</b>.</li>
+      <li>Tap the link in the text you get and fill in the Nice-to-Meet-You form: partner type, where you met, the personal touch, and what you talked about. Submit.</li>
+    </ol>
+  </div>
+
+  <div class="split">
+    <div class="box"><h3>The personal touch makes the email</h3>
+      <p>Specific beats nice. The AI only uses what you give it.</p>
+      <ul class="plain">
+        <li><span class="pill ok">Good</span> Loves Crown Royal. Says Apple is overrated.</li>
+        <li><span class="pill ok">Good</span> Daughter just started at Texas A&amp;M. Proud Aggie dad.</li>
+        <li><span class="pill ok">Good</span> Runs the Bayou City 10K every March.</li>
+        <li><span class="pill warn">Too thin</span> Nice guy. Good conversation.</li>
+      </ul>
+      <p>Leave out health, religion, politics, money trouble, and family trouble. The AI is told to skip those anyway.</p>
+    </div>
+    <div class="box"><h3>When a draft comes back to you</h3>
+      <ol class="steps">
+        <li>You get a text and an email that say <b>Draft ready</b>, with the reason it was held.</li>
+        <li>Open the contact. Read the <b>RP Email Draft</b> field and edit it right there if needed.</li>
+        <li>Add the tag <code>rp-approved</code>. It sends within a minute, with your edits.</li>
+      </ol>
+      <p>Don't want it sent at all? Add <code>rp-cancel</code> instead.</p>
+    </div>
+  </div>
+
+  <div class="note ok"><b>No signal or scanner trouble?</b> Open the Nice-to-Meet-You form from your bookmarks, type the name and email yourself, and attach a photo of the card. The rest of the process is the same.</div>
+</section>
+
+<!-- BUILD GUIDE -->
+<section class="panel" id="build" role="tabpanel" aria-labelledby="t-build" hidden>
+  <h2>One-Time GHL Build</h2>
+  <p>Build this once in a template sub-account from the master (agency) login, then push it to every agent with a snapshot. Each agent's own values (name, calendar, signature) live in Custom Values, which a snapshot push never overwrites.</p>
+
+  <div class="part"><span class="tag">Part 1 · Custom fields</span>
+    <p>Settings, Custom Fields, new folder <b>Referral Partner</b>. Create these contact fields. After saving, copy each field's merge key from the picker; the keys below are the ones the prompts expect.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Field name</th><th>Type</th><th>Merge key</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>RP Partner Type</td><td>Dropdown (single)</td><td><code>{{contact.rp_partner_type}}</code></td><td>Options: Doctor – PCP · Doctor – Specialist · Dentist · Optometrist · CPA / Tax Preparer · Financial Advisor · Estate / Elder Law Attorney · Home Health / Senior Care · Senior Center · Senior Community · Other</td></tr>
+        <tr><td>RP Where We Met</td><td>Single line</td><td><code>{{contact.rp_where_met}}</code></td><td>"Katy Area Chamber mixer, Thursday"</td></tr>
+        <tr><td>RP Personal Touch</td><td>Multi-line</td><td><code>{{contact.rp_personal_touch}}</code></td><td>"Loves Crown Royal"</td></tr>
+        <tr><td>RP Conversation Notes</td><td>Multi-line</td><td><code>{{contact.rp_conversation_notes}}</code></td><td>What you talked about, who their clients are</td></tr>
+        <tr><td>RP Email Draft</td><td>Multi-line</td><td><code>{{contact.rp_email_draft}}</code></td><td>Filled by the AI. Agents edit it here when a draft is held.</td></tr>
+        <tr><td>RP QA Result</td><td>Single line</td><td><code>{{contact.rp_qa_result}}</code></td><td>Filled by the proofreader: <code>SEND</code> or <code>REVIEW: reason</code></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="part"><span class="tag">Part 2 · Custom values (per agent)</span>
+    <p>Settings, Custom Values. Create these in the template account with placeholder values. After the snapshot lands, fill in each agent's real values once.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Custom value</th><th>Merge key</th><th>Donna's example</th></tr></thead>
+      <tbody>
+        <tr><td>RP Agent First Name</td><td><code>{{custom_values.rp_agent_first_name}}</code></td><td>Donna</td></tr>
+        <tr><td>RP Coffee Calendar Link</td><td><code>{{custom_values.rp_coffee_calendar_link}}</code></td><td>Her "Coffee with Donna" booking URL</td></tr>
+        <tr><td>RP Agent Signature</td><td><code>{{custom_values.rp_agent_signature}}</code></td><td>Name, title, cell, office, website</td></tr>
+        <tr><td>RP Details Form Link</td><td><code>{{custom_values.rp_details_form_link}}</code></td><td>The Nice-to-Meet-You form URL in her account</td></tr>
+        <tr><td>RP Auto Send</td><td><code>{{custom_values.rp_auto_send}}</code></td><td><code>no</code> for her first 3, then <code>yes</code></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="part"><span class="tag">Part 3 · Coffee calendar</span>
+    <ol class="steps">
+      <li>Calendars, New Calendar, <b>Personal Booking</b> (one agent). Name it <b>Coffee with [Agent]</b>. Set 30 minutes, a 15-minute buffer, and 24-hour minimum notice.</li>
+      <li>Location: "Coffee shop of your choice, I'll confirm by text", or the agent's regular spot. Donna picks her Houston spot.</li>
+      <li>Form fields: name, email, phone, and one optional question, "Anything you'd like me to bring?"</li>
+      <li>Copy the booking link into <code>rp_coffee_calendar_link</code>.</li>
+    </ol>
+  </div>
+
+  <div class="part"><span class="tag">Part 4 · Nice-to-Meet-You form</span>
+    <ol class="steps">
+      <li>Sites, Forms, Builder, new form <b>RP – Nice to Meet You</b>. Make it mobile-first and single-column.</li>
+      <li>Fields in this order: First Name, Last Name, Email (required), Phone, Company Name, RP Partner Type (required), RP Where We Met, RP Personal Touch (required), RP Conversation Notes, and Card Photo (File Upload, JPG/PNG/HEIC, optional).</li>
+      <li>Help text under Personal Touch: <i>"Be specific. 'Loves Crown Royal' beats 'nice guy.' Skip health, religion, and politics."</i></li>
+      <li>On-submit message: "Got it. Your note is being written."</li>
+      <li>Check the sub-account's <b>Allow Duplicate Contact</b> setting is <b>off</b>, with email as the primary match. That way the form updates the contact the scanner created instead of making a second one.</li>
+      <li>Copy the form's share link into <code>rp_details_form_link</code>.</li>
+    </ol>
+  </div>
+
+  <div class="part"><span class="tag">Part 5 · Workflow 1: RP 1 – Card Scanned</span>
+    <ol class="steps">
+      <li><b>Trigger:</b> Contact Tag, tag added = <code>rp-card</code>.</li>
+      <li><b>Internal Notification</b> (SMS to the assigned user; for a one-agent sub-account, pick the agent): <br><code>Got {{contact.first_name}}'s card. 45 seconds to personalize: {{custom_values.rp_details_form_link}}?email={{contact.email}}&amp;first_name={{contact.first_name}}</code></li>
+    </ol>
+    <p>The <code>?email=</code> part pre-fills the form. If the form doesn't pre-fill in your account, the link still works and the agent types the email.</p>
+  </div>
+
+  <div class="part"><span class="tag">Part 6 · Workflow 2: RP 2 – Write &amp; Send</span>
+    <ol class="steps">
+      <li><b>Trigger:</b> Form Submitted, form = <b>RP – Nice to Meet You</b>. Workflow setting: allow re-entry <b>off</b>.</li>
+      <li><b>Add Tag:</b> <code>rp-partner</code>. Remove tag <code>rp-card</code>.</li>
+      <li><b>GPT powered by OpenAI</b>, action type Custom. Model: GPT 5 Mini, temperature 0.7. Paste the <b>Email Writer</b> prompt from the AI Prompts tab.</li>
+      <li><b>Update Contact Field:</b> RP Email Draft = the GPT output. Pick it from the merge-field picker. It usually reads <code>{{chatgpt.1.response}}</code>, but the number depends on the step position.</li>
+      <li><b>GPT powered by OpenAI</b>, Custom, temperature 0.1. Paste the <b>Proofreader</b> prompt.</li>
+      <li><b>Update Contact Field:</b> RP QA Result = the second GPT output.</li>
+      <li><b>If/Else:</b> RP QA Result <b>is</b> <code>SEND</code>.
+        <ul class="plain">
+          <li><b>Yes branch:</b> Wait 10 minutes. Then If/Else: has tag <code>rp-cancel</code>? If yes, end. If no, <b>Send Email</b> (template below) and Add Tag <code>rp-intro-sent</code>.</li>
+          <li><b>No branch:</b> Add Tag <code>rp-needs-review</code>. <b>Internal Notification</b> by SMS and email to the agent: <code>Draft ready for {{contact.first_name}} ({{contact.rp_qa_result}}). Open the contact, check RP Email Draft, then add tag rp-approved.</code> Then <b>Wait</b> for the event "Contact Tag Added" = <code>rp-approved</code>, timeout 48 hours. Then If/Else on tag <code>rp-approved</code>: if yes, Send Email, add <code>rp-intro-sent</code>, and remove <code>rp-needs-review</code>. If no, send a reminder notification.</li>
+        </ul>
+      </li>
+    </ol>
+    <div class="box">
+      <h3>Send Email template</h3>
+      <dl class="inputs">
+        <dt>From name</dt><dd>The agent's full name</dd>
+        <dt>From email</dt><dd>The agent's address on a verified sending domain</dd>
+        <dt>Subject</dt><dd><code>Great meeting you, {{contact.first_name}}</code></dd>
+        <dt>Body</dt><dd><code>{{contact.rp_email_draft}}</code>, then a button "Pick a coffee time" linked to <code>{{custom_values.rp_coffee_calendar_link}}</code>, then <code>{{custom_values.rp_agent_signature}}</code></dd>
+      </dl>
+      <p>Send a test to yourself first. If the paragraphs run together, add this line to the end of the Email Writer prompt: <i>"Separate paragraphs with &lt;br&gt;&lt;br&gt;."</i></p>
+    </div>
+  </div>
+
+  <div class="part"><span class="tag">Part 7 · Workflow 3: RP 3 – Coffee Booked (plus an optional nudge)</span>
+    <ol class="steps">
+      <li><b>Trigger:</b> Customer Booked Appointment, calendar = Coffee with [Agent]. <b>Action:</b> Add Tag <code>rp-coffee-booked</code> and send an Internal Notification to the agent.</li>
+      <li><b>Optional nudge</b> (add it to the end of Workflow 2): wait 5 days. If the contact doesn't have <code>rp-coffee-booked</code>, create a task for the agent: "Friday text to {{contact.first_name}}: have a great weekend." A personal Friday text keeps you top of mind through the weekend.</li>
+    </ol>
+  </div>
+
+  <div class="part"><span class="tag">Part 8 · Test, then push to the team</span>
+    <ol class="steps">
+      <li>In the template account, scan a real card (use your own), fill in the form, and confirm the draft is held with <code>REVIEW: training mode</code>.</li>
+      <li>Change <code>rp_auto_send</code> to <code>yes</code> and run it again. The email should send after 10 minutes.</li>
+      <li>Test a bad one on purpose: type the first name as "Mrak" on the card and "Mark" in the notes. The proofreader should hold it.</li>
+      <li>From the agency view, go to Account Snapshots. Refresh the snapshot and click <b>Push Updates</b>. Select the agent sub-accounts, then choose Custom Fields, Custom Values, Forms, Calendars, and Workflows.</li>
+      <li>In each agent's sub-account, set their five custom values and connect their calendar. Keep <code>rp_auto_send = no</code> until they have approved 3 drafts.</li>
+    </ol>
+    <div class="note"><b>Heads up on pushes.</b> A snapshot push overwrites the workflows and forms it carries, so any edits an agent made to them are lost. Custom values that already exist are left alone, so their name, calendar, and signature stay safe.</div>
+  </div>
+</section>
+
+<!-- PROMPTS -->
+<section class="panel" id="prompts" role="tabpanel" aria-labelledby="t-prompts" hidden>
+  <h2>AI Prompts</h2>
+  <p>Paste these into the two <b>GPT powered by OpenAI</b> steps in Workflow 2. The merge fields fill in automatically for each contact.</p>
+
+  <div class="prompt">
+    <div class="bar"><h3>Email Writer · step 3 · temperature 0.7</h3><button class="copy" data-target="p-writer">Copy prompt</button></div>
+<pre id="p-writer">You are writing a short "nice to meet you" email for {{custom_values.rp_agent_first_name}}, an independent Medicare and retirement agent with The Retirement Answer Team. The reader is a professional the agent just met in person and hopes to build a referral relationship with. The reader is NOT a Medicare client.
+
+FACTS (use only these, never invent anything):
+- Their first name: {{contact.first_name}}
+- Their company: {{contact.company_name}}
+- Partner type: {{contact.rp_partner_type}}
+- Where we met: {{contact.rp_where_met}}
+- Personal touch: {{contact.rp_personal_touch}}
+- What we talked about: {{contact.rp_conversation_notes}}
+
+WRITE, in this order:
+1. Greeting: their first name and a comma, alone on the first line.
+2. One sentence naming where you met.
+3. One or two sentences that use the personal touch warmly and naturally. Light humor is welcome if it fits. Mention it once. Add no details that are not in the facts.
+4. One or two sentences on how the agent helps this partner type's clients or patients (see the angles below). Say "your clients" or "your patients."
+5. One sentence inviting them to coffee. Do not include a link; the booking button is added below your text.
+6. End with "With kind regards," on its own line. No name and no signature.
+
+ANGLE BY PARTNER TYPE:
+- Doctor (PCP or Specialist): patients turning 65 or changing plans who want to keep their doctors; the agent checks networks before anyone enrolls.
+- Dentist: patients surprised that Original Medicare does not cover routine dental care; the agent walks them through their options.
+- Optometrist: patients surprised that Original Medicare does not cover routine eye exams or glasses; the agent walks them through their options.
+- CPA / Tax Preparer: clients retiring or turning 65; IRMAA surcharges; HSA contributions that have to stop before Medicare starts.
+- Financial Advisor: healthcare costs inside the retirement plan; IRMAA; timing the move off employer coverage.
+- Estate / Elder Law Attorney: clients planning for long-term care, or who may qualify for Medicaid or a Medicare Savings Program.
+- Home Health / Senior Care: clients whose plan decides which agencies and services they can use.
+- Senior Center: free, no-sales education sessions such as Medicare 101 and "Stop the Calls."
+- Senior Community: residents facing plan changes or non-renewals; on-site education; a move can open a Special Enrollment Period.
+- Other: a trusted, local person their clients can call with Medicare questions.
+
+RULES:
+- 60 to 120 words. Warm, direct, peer to peer.
+- Write in first person as the agent ("I").
+- Never name a Medicare plan, carrier, premium, or benefit amount.
+- If the personal touch involves health, religion, politics, money trouble, or family trouble, leave it out.
+- No em dashes. At most one exclamation point.
+- Never use: "I hope this email finds you well," "just wanted to," "touch base," "circle back," "delve," "leverage," "synergy," "act now."
+- Output only the email body as plain text. No subject line, no quotation marks, no notes.</pre>
+  </div>
+
+  <div class="prompt">
+    <div class="bar"><h3>Proofreader · step 5 · temperature 0.1</h3><button class="copy" data-target="p-qa">Copy prompt</button></div>
+<pre id="p-qa">You are a strict proofreader for outgoing email. Answer with exactly one line and nothing else.
+
+AUTO_SEND setting: {{custom_values.rp_auto_send}}
+Contact first name from the card: {{contact.first_name}}
+Contact email: {{contact.email}}
+Draft:
+"""
+{{chatgpt.1.response}}
+"""
+
+Check in this order:
+1. If AUTO_SEND is not exactly "yes", answer: REVIEW: training mode
+2. The greeting uses the contact first name spelled exactly as above.
+3. No misspelled words, typos, or grammar mistakes.
+4. No leftover placeholders or labels such as {{ }}, [ ], "Personal touch:", "N/A", or "undefined".
+5. No Medicare plan, carrier, premium, or benefit amount is named.
+6. Nothing about health, religion, politics, money trouble, or family trouble.
+7. Between 50 and 140 words and ends with "With kind regards,".
+8. The contact email is present and looks like a real address.
+
+If every check passes, answer exactly: SEND
+Otherwise answer: REVIEW: followed by the first problem in 12 words or fewer.</pre>
+  </div>
+  <div class="note">In the proofreader, replace <code>{{chatgpt.1.response}}</code> with whatever the merge picker shows for the Email Writer step's output in your workflow.</div>
+</section>
+
+<!-- SAMPLE -->
+<section class="panel" id="sample" role="tabpanel" aria-labelledby="t-sample" hidden>
+  <h2>Sample: Donna meets a CPA</h2>
+  <p>This is an example of what the process produces. The contact is made up for illustration.</p>
+  <div class="split">
+    <div class="box"><h3>What Donna entered</h3>
+      <dl class="inputs">
+        <dt>Card scan</dt><dd>Mark Ellison, Ellison Tax Group, mark@ellisontax.example</dd>
+        <dt>Partner type</dt><dd>CPA / Tax Preparer</dd>
+        <dt>Where met</dt><dd>Katy Area Chamber mixer, Thursday</dd>
+        <dt>Personal touch</dt><dd>Loves Crown Royal</dd>
+        <dt>Notes</dt><dd>Lots of clients retiring from the energy companies. Asked about IRMAA.</dd>
+      </dl>
+      <p><span class="pill">Proofreader</span> <code>REVIEW: training mode</code> for her first 3, then <code>SEND</code>.</p>
+    </div>
+    <div class="email" aria-label="Sample email">
+      <div class="hdr"><span><b>From:</b> Donna Sanders</span><span><b>Subject:</b> Great meeting you, Mark</span></div>
+      <div class="bd">
+        <p>Mark,</p>
+        <p>Great meeting you at the Katy Area Chamber mixer Thursday.</p>
+        <p>I haven't forgotten the Crown Royal conversation. Coffee first, Crown Royal once we've earned it.</p>
+        <p>You mentioned a lot of your clients are retiring out of the energy companies. That's usually when the IRMAA surprise shows up, along with an HSA that should have stopped before Medicare started. I help your clients sort that out before tax season, so they walk in with answers instead of questions.</p>
+        <p>Would you grab a coffee with me in the next couple of weeks?</p>
+        <p>With kind regards,</p>
+        <a class="btn" href="#sample">Pick a coffee time</a>
+        <div class="sig">Donna Sanders<br>Licensed Insurance Agent · The Retirement Answer Team<br>Houston, TX</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASE -->
+<section class="panel" id="usecase" role="tabpanel" aria-labelledby="t-usecase" hidden>
+  <h2>Team AI Use Case: the card that doesn't die in your cup holder</h2>
+  <div class="voice">
+    <p>Every one of you has a stack of business cards in the car. The dentist from the health fair. The CPA from the Chamber breakfast. The activities director who said "call me about a presentation." Most of those cards never get a follow-up, and not because you don't care. By the time you're home, there's a client call, a carrier training, and dinner.</p>
+    <p>Donna asked for a better way, and she asked for it in Houston, where the drive between meetings eats the day. So we built one.</p>
+  </div>
+
+  <div class="split">
+    <div class="box"><h3>What the AI does</h3>
+      <ul class="plain">
+        <li>Reads the card: name, email, phone, company.</li>
+        <li>Writes a 60-to-120-word note that sounds like a person, using the detail you gave it.</li>
+        <li>Proofreads its own work and holds anything with a misspelled name or a typo.</li>
+        <li>Puts your coffee calendar right under the note.</li>
+      </ul>
+    </div>
+    <div class="box"><h3>What you do</h3>
+      <ul class="plain">
+        <li>Notice something real about the person. That is the job, and AI can't do it for you.</li>
+        <li>Spend 45 seconds typing it in.</li>
+        <li>Read your first three drafts before they go out.</li>
+        <li>Show up for coffee.</li>
+      </ul>
+    </div>
+    <div class="box"><h3>What it costs</h3>
+      <ul class="plain">
+        <li>Card scans: 50 free per sub-account per day, then $0.02 each.</li>
+        <li>AI writing and proofreading: billed through GHL at OpenAI's token rates. A short email costs pennies or less.</li>
+        <li>Your time: about a minute per card, down from the follow-up that never happened.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="voice">
+    <p><b>Be the agent, not the office assistant.</b> Your time belongs in front of beneficiaries and the professionals who send them to you. Typing contact info into a CRM at 9 p.m. is an ankle-biter. Hand it off.</p>
+    <p><b>Tell the AI "go do this."</b> Don't ask it "how do I do this." The prompts on this page are instructions, not questions. That shift is where the 10x comes from. You still check its work, which is why training mode exists.</p>
+    <p><b>Keep the two referral engines separate.</b> Referral partners (CPAs, advisors, attorneys, doctors, dentists, senior communities) are one pillar. Clients who send their friends are another. This page builds the first one.</p>
+  </div>
+
+  <div class="part"><span class="tag">Rollout</span>
+    <ol class="steps">
+      <li><b>This week:</b> Tim builds the template account and pushes the snapshot. Donna goes first in Houston.</li>
+      <li><b>Before your next event:</b> install LeadConnector, connect your coffee calendar, and scan your own card as a test.</li>
+      <li><b>First three cards:</b> read every draft and approve it. Tell Tim what you changed so the prompt gets better for everyone.</li>
+      <li><b>After that:</b> auto mode. You only see the drafts the proofreader flags.</li>
+      <li><b>Monday team call:</b> share one coffee that came from a card. Wins belong to the agent who earned them.</li>
+    </ol>
+  </div>
+  <p style="color:var(--ink-soft);font-size:14px">The model for this came from Lisa Laird's process: upload the card, add the contact to the CRM, and trigger a personal follow-up.</p>
+</section>
+
+<!-- LINKS -->
+<section class="panel" id="links" role="tabpanel" aria-labelledby="t-links" hidden>
+  <h2>Links</h2>
+  <div class="links">
+    <a href="https://success.retirement.agency/"><b>Agent Success HQ</b><span>Back to the hub</span></a>
+    <a href="https://help.gohighlevel.com/support/solutions/articles/155000006711-ai-powered-business-card-scanner"><b>AI Business Card Scanner</b><span>GHL help: how the mobile scanner works</span></a>
+    <a href="https://help.gohighlevel.com/support/solutions/articles/155000003049-how-to-use-the-business-card-scanner-in-the-mobile-app"><b>Scanner in the mobile app</b><span>GHL help: step by step on the phone</span></a>
+    <a href="https://help.gohighlevel.com/support/solutions/articles/155000000209-workflow-action-gpt-powered-by-openai"><b>GPT workflow action</b><span>GHL help: the AI writing step</span></a>
+    <a href="https://help.gohighlevel.com/support/solutions/articles/155000002470-workflow-action-wait"><b>Wait action</b><span>GHL help: wait for a tag with a timeout</span></a>
+    <a href="https://help.gohighlevel.com/support/solutions/articles/155000003202-workflow-action-internal-notification"><b>Internal Notification</b><span>GHL help: texting the agent</span></a>
+    <a href="https://help.gohighlevel.com/support/solutions/articles/155000004390-overview-of-merge-fields-custom-variables"><b>Merge fields &amp; custom values</b><span>GHL help: the {{ }} keys</span></a>
+    <a href="https://help.gohighlevel.com/support/solutions/articles/48001181714-allow-duplicate-contacts-contact-deduplication-preferences-"><b>Duplicate contact settings</b><span>GHL help: so the form updates the scanned contact</span></a>
+    <a href="https://help.gohighlevel.com/support/solutions/articles/48000982587-pushing-loading-snapshot-updates-to-client-accounts"><b>Push snapshot updates</b><span>GHL help: roll it out to every agent</span></a>
+  </div>
+</section>
+
+<footer>Loreen &amp; Lane, LLC · The Retirement Answer Team · Internal agent resource. Referral partner outreach is B2B and is not Medicare marketing to beneficiaries; keep plan names, carriers, and premiums out of these emails.</footer>
+</div>
+
+<script>
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('nav.tabs [role="tab"]'));
+  function show(id,push){
+    var found=false;
+    tabs.forEach(function(t){var on=t.getAttribute('aria-controls')===id; if(on)found=true; t.setAttribute('aria-selected',on?'true':'false'); document.getElementById(t.getAttribute('aria-controls')).hidden=!on;});
+    if(!found) return show('overview',false);
+    try{localStorage.setItem('rp-tab',id);}catch(e){}
+    if(push){try{history.replaceState(null,'','#'+id);}catch(e){}}
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){show(t.getAttribute('aria-controls'),true); window.scrollTo({top:0});});});
+  document.querySelector('nav.tabs').addEventListener('keydown',function(e){
+    var i=tabs.indexOf(document.activeElement); if(i<0)return;
+    if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault(); var n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length]; n.focus(); n.click();}
+  });
+  var start=(location.hash||'').replace('#','');
+  if(!start){try{start=localStorage.getItem('rp-tab')||'';}catch(e){}}
+  show(start||'overview',false);
+  document.querySelectorAll('button.copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var el=document.getElementById(b.dataset.target), txt=el.textContent;
+      function ok(){b.textContent='Copied'; b.classList.add('done'); setTimeout(function(){b.textContent='Copy prompt'; b.classList.remove('done');},1800);}
+      function fallback(){var r=document.createRange(); r.selectNodeContents(el); var s=getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent='Selected, press Copy';}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,fallback);} else fallback();
+    });
+  });
+})();
+</script>
